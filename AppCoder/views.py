@@ -1,9 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 #from django.shortcuts import render
-from AppCoder.models import Curso,Profesor
-from AppCoder.forms import CursoFormulario, ProfesorFormulario
-# Create your views here.
+from AppCoder.models import Curso,Profesor,Imagenes
+from AppCoder.forms import CursoFormulario, ImagenFormulario, ProfesorFormulario
+# Create your views here.1
 
 
 def curso(self):
@@ -32,6 +32,8 @@ def cursos(request):
     return render(request, 'AppCoder/cursos.html',{"miFormulario":miFormulario})
   # return HttpResponse("Vista de cursos") 
    #return render(request, 'AppCoder/cursos.html')
+
+
 
 def estudiantes(request):
     """ return HttpResponse("Vista de estudiantes") """
@@ -119,10 +121,42 @@ def buscarComision(request):
     return render(request, 'AppCoder/buscarComision.html')
 
 def buscar(request):
-    respuesta = f"Estoy buscando la camada nro: {request.GET['comision']}"
+    #respuesta = f"Estoy buscando la camada nro: {request.GET['comision']}"
     comision=request.GET['comision']
     if comision!="":
         cursos = Curso.objects.filter(comision=comision)
-        return render(request, 'AppCoder/resultadosBusqueda.html',{'cursos':cursos, 'comision':comision})
+        return render(request, 'AppCoder/buscarComision.html',{'cursos':cursos, 'comision':comision})
     else:
          return render(request, 'AppCoder/buscarComision.html',{"error":"No se ingreso una comision"})
+
+
+def imagenes(request):
+    if request.method == 'POST':
+
+        miFormulario = ImagenFormulario(request.POST,request.FILES)
+        if miFormulario.is_valid():
+            #informacion=miFormulario.cleaned_data
+            
+            name = miFormulario.cleaned_data.get("nombre")
+            img = miFormulario.cleaned_data.get("imagen")
+            print(name)
+            obj=Imagenes(nombre=name, imagen=img)
+            obj.save()
+            return render(request, 'AppCoder/inicio.html')
+    else:
+        miFormulario = ImagenFormulario()
+
+    return render(request, 'AppCoder/imagenes.html',{"miFormulario":miFormulario})
+
+def buscarImagens(request):
+    nombre=request.GET['nombre']
+    if nombre!="":
+        imagenes=Imagenes.objects.filter(nombre=request.GET['nombre'])
+        return render(request, 'AppCoder/buscarImagen.html',{'imagenes':imagenes ,'nombre':request.GET['nombre']})
+    else:
+         return render(request, 'AppCoder/buscarImagen.html',{'error':"No se ingreso un nombre"})
+
+def buscarImagen(request):
+    return render(request, 'AppCoder/buscarImagen.html')
+    
+    

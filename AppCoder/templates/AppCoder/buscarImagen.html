@@ -1,0 +1,35 @@
+{% extends "AppCoder/padre.html" %}
+{% load static %}
+
+
+{% block titulo %}
+<h1>Buscar Curso Por Comision</h1>
+{% endblock %}
+{% block contenidoQueCambia %}
+    <br>
+    <center>
+        {% if error %}
+        <p style="color: red">{{error}}</p>
+    {% endif %}
+
+    <form action="{% url 'buscarImagens' %}" method="GET"><!--solo en post {% csrf_token %} -->
+        <input type="text" name="nombre" id="nombre" placeholder="Ejemplo : ejemplo">
+        <input type="submit" value="Enviar">
+    </form>
+
+    {% if nombre %}
+    <p>Estamos buscando el {{nombre}}</p>
+
+    {% if imagenes%}
+    
+        {% for imagen in imagenes %}
+        
+        <!--  mostrar imagen en html-->
+        <img src="{{imagen.imagen.url}}"  width="200" height="200">
+        <br>
+        <hr>
+    {% endfor %}
+    {% endif %}
+    {% endif %}
+    </center>
+{% endblock %}

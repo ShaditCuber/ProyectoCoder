@@ -1,20 +1,20 @@
 {% extends "AppCoder/padre.html" %}
 {% load static %}
 {% block titulo %}
-<h1 class="mb-5">FORMULARIO CURSOS</h1>
+<h1 class="mb-5">FORMULARIO Imagenes</h1>
 {% endblock %}
 {% block contenidoQueCambia %}   
   <center>
-    <h1>Cursos</h1>
+    <h1>Imagenes</h1>
   
     {% if miFormulario.errors %}
-        <p style="color: red">Estan mal los datos , revisar!!</p>
+        <p style="color: red">{{miFormulario.errors}}</p>
     {% endif %}
     
-    <form action="{% url 'cursos' %}" method="POST">{% csrf_token %}
+    <form action="{% url 'imagenes' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
         
         <table>
-            {{miFormulario.as_table}}
+            {{miFormulario.as_p}}
         </table>
         <input type="submit" value="Enviar">
     </form>

@@ -14,5 +14,7 @@ urlpatterns = [
         #path('profeFormulario/', profeFormulario,name='profeFormulario'),
         path('buscarComision/', buscarComision,name='buscarComision'),
         path('buscar/', buscar,name='buscar'),
-        
+        path('imagenes/', imagenes,name='imagenes'),
+        path('buscarImagen/', buscarImagen,name='buscarImagen'),
+        path('buscarImagens/', buscarImagens,name='buscarImagens'),
         ]

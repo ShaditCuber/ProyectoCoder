@@ -37,3 +37,10 @@ class Entregable(models.Model):
     def __str__(self):
         return self.nombre + " " + str(self.fecha_entrega) + " " + str(self.entregado)
        
+
+class Imagenes(models.Model):
+    nombre=models.CharField(max_length=30)
+    imagen=models.ImageField(upload_to='imagenes', null=True) 
+
+    def __str__(self):
+        return self.nombre
