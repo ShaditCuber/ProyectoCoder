@@ -1,0 +1,16 @@
+{% extends "AppCoder/padre.html" %}
+{% load static %}
+{% block titulo %}
+<h1 class="mb-5">Profe</h1>
+{% endblock %}
+{% block contenidoQueCambia %}   
+    
+    <form action="{% url 'login_request'  %} " method="POST">{% csrf_token %}
+
+        {{form.as_p}}
+        <button type="submit">Inicar Sesion</button>
+
+    </form>
+      
+      
+{% endblock %}

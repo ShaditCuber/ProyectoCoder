@@ -26,7 +26,7 @@ class Profesor(models.Model):
     profesion=models.CharField(max_length=30)
 
     def __str__(self):
-        return self.nombre + " " + self.apellido+" "+self.profesion
+        return self.nombre + " " + self.apellido+" "+self.profesion+" "+self.email
 
 #creamos clase entregable
 class Entregable(models.Model):

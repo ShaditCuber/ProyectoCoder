@@ -8,13 +8,19 @@
     <center>
         {% for profesor in profesores %}
       
-            <li>{{profesor}}</li>
+           <li>
+            {{profesor.nombre}}
+            {{profesor.apellido}}
+           </li>
             <button>
                 <a href="{% url 'eliminarProfesor' profesor.nombre%}">Eliminar Profe</a>
                 
             </button>
             <button>
                 <a href="{% url 'editarProfesor' profesor.nombre%}">Editar Profe</a>
+            </button>
+            <button>
+                <a href="{% url 'buscarProfesorID' profesor.id%}">Ver Profe</a>
             </button>
             <br>
             <br>

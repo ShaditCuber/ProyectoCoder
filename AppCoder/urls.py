@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import  *
+from django.contrib.auth.views import LogoutView
 
 
 urlpatterns = [
@@ -17,11 +18,13 @@ urlpatterns = [
         path('imagenes/', imagenes,name='imagenes'),
         path('buscarImagen/', buscarImagen,name='buscarImagen'),
         path('buscarImagens/', buscarImagens,name='buscarImagens'),
-        path('leerProfesores/', leerProfesores,name='leerProfesores'),
+        path('leerProfesores/', leerProfesores,name='profesores_list'),
         path('eliminarProfesor/<nombre_profesor>', eliminarProfesor,name='eliminarProfesor'),
         path('editarProfesor/<nombre_profesor>', editarProfesor,name='editarProfesor'),
-
-
+        path('buscarProfesorID/<id_profesor>', buscarProfesorID,name='buscarProfesorID'),
+        path('login_request/', login_request,name='login_request'),
+        path('register/', register,name='register'),
+        path('logout/', LogoutView.as_view(template_name='AppCoder/logout.html'),name='logout'),
         #url con CBV
         path('estudiante/list/', EstudianteList.as_view(), name='estudiante_list'),
         path('estudiante/<pk>', EstudianteDetalle.as_view(), name='estudiante_detalle'),
