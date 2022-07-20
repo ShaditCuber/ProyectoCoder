@@ -16,19 +16,33 @@
                 <a href="{% url 'eliminarProfesor' profesor.nombre%}">Eliminar Profe</a>
                 
             </button>
-            <button>
-                <a href="{% url 'editarProfesor' profesor.nombre%}">Editar Profe</a>
-            </button>
+            <button type="button" onclick="abrir('{% url 'editarProfesor' profesor.nombre %}')">Editar</button>
             <button>
                 <a href="{% url 'buscarProfesorID' profesor.id%}">Ver Profe</a>
             </button>
             <br>
             <br>
+            <!-- Modal -->
+            <div class="modal fade" id="editar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                Wuwuw
+            </div>
     {% endfor %}
      <br>       
     <a href="{% url 'profesores' %}">Agregar más profesores</a>
     </center>
      
-    
+ 
         
 {% endblock %}
+{% block extraJS %}
+<script type="text/javascript">
+
+  function abrir(url){
+    $('#editar').load(url,function(){
+      $(this).modal('show');
+    });
+  }
+
+  
+</script>
+{% endblock extraJS %}

@@ -2,8 +2,18 @@
 {% load static %}
 {% block titulo %}
 <h1 class="mb-5">Inicio!</h1>
+
 {% endblock %}
+{% block avatar %}
+<a  href="{% url 'logout' %}"><img src="{{ img }}" alt="" width="80px" height="80px"  class="rounded-circle"></a>
+{% endblock %}
+
 {% block contenidoQueCambia %}   
   <h1>{{mensaje}}</h1>
   <h1>Esto es un bloque de contenido que cambia</h1>
+  
+
 {% endblock %}
+
+
+  

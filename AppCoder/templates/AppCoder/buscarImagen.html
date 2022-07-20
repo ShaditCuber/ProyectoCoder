@@ -26,6 +26,7 @@
         
         <!--  mostrar imagen en html-->
         <img src="{{imagen.imagen.url}}"  width="200" height="200">
+        <a href="{% url 'eliminarImagen' imagen.nombre %}">Borrar</a>
         <br>
         <hr>
     {% endfor %}

@@ -1,14 +1,15 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 #from django.shortcuts import render
-from AppCoder.models import Curso,Profesor,Imagenes,Estudiante
-from AppCoder.forms import CursoFormulario, ImagenFormulario, ProfesorFormulario, UserRegisterForm
+from AppCoder.models import Curso,Profesor,Imagenes,Estudiante,Avatar
+from AppCoder.forms import CursoFormulario, ImagenFormulario, LoginForm, ProfesorFormulario, UserRegisterForm,UserEditForm,AvatarForm
 from django.views.generic import ListView,DetailView,CreateView,UpdateView,DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth  import login,authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 # Create your views here.1
 
 
@@ -21,7 +22,10 @@ def curso(self):
 
 def inicio(request):
     """ return HttpResponse("Vista de inicio") """
-    return render(request, 'AppCoder/inicio.html')
+    avatar= Avatar.objects.filter(user = request.user.id)
+    
+    print(avatar[0].imagen.url)
+    return render(request, 'AppCoder/inicio.html',{'img':avatar[0].imagen.url })
 @login_required
 def cursos(request):
     if request.method == 'POST':
@@ -250,7 +254,7 @@ class EstudianteEliminar(DeleteView,LoginRequiredMixin):
 
 def login_request(request):
     if request.method == 'POST':
-        form = AuthenticationForm(request, request.POST)
+        form = LoginForm(request, request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
@@ -263,7 +267,7 @@ def login_request(request):
         else:
             return render(request, 'AppCoder/login.html',{'form':form,'mensaje':f"Formulario invalido"})
     else:
-        form = AuthenticationForm()
+        form = LoginForm()
         return render(request, 'AppCoder/login.html', {'form': form})
 
 def register(request):
@@ -280,3 +284,46 @@ def register(request):
         form = UserRegisterForm()
         return render(request, 'AppCoder/register.html', {'form_register': form})
     
+
+@login_required
+def editar_Usuario(request):
+    if request.method == 'POST':
+        form = UserEditForm(request.POST, instance=request.user)
+        if form.is_valid():
+            informacion=form.cleaned_data
+            request.user.first_name=informacion['first_name']
+            request.user.last_name=informacion['last_name']
+            request.user.email=informacion['email']
+            form.save()
+            return render(request, 'AppCoder/inicio.html',{'editarUser':form,'mensaje':f"Usuario editado correctamente",'usuario':request.user})
+        else:
+            return render(request, 'AppCoder/editarUsuario.html',{'editarUser':form,'mensaje':f"Formulario invalido"})
+    else:
+        form = UserEditForm(instance=request.user)
+        return render(request, 'AppCoder/editarUsuario.html', {'editarUser': form})
+
+def eliminarImagen(request,nombre):
+    imagen = Imagenes.objects.get(nombre=nombre)
+    imagen.delete()
+    return render(request,'AppCoder/inicio.html')
+
+@login_required
+def agregarAvatar(request):
+    if request.method == 'POST':
+        form = AvatarForm(request.POST, request.FILES)
+        if form.is_valid():
+            u = User.objects.get(username=request.user)
+
+            avatarViejo = Avatar.objects.get(user=u)
+            if avatarViejo!=None:
+                avatarViejo.delete()
+            
+            informacion=form.cleaned_data
+            avatar=Avatar(user=u ,imagen=informacion['imagen'])
+            avatar.save()
+            return render(request, 'AppCoder/inicio.html',{'form_avatar':form,'mensaje':f"Avatar agregado correctamente  "})
+        #le saca el de formulario invalido
+    else:
+        form = AvatarForm()
+        return render(request, 'AppCoder/agregarAvatar.html', {'form_avatar': form})
+
