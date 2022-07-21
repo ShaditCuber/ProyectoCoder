@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 #from django.shortcuts import render
 from AppCoder.models import Curso,Profesor,Imagenes,Estudiante,Avatar
@@ -253,6 +253,7 @@ class EstudianteEliminar(DeleteView,LoginRequiredMixin):
 
 
 def login_request(request):
+    redirect_to = request.POST.get('next', '')
     if request.method == 'POST':
         form = LoginForm(request, request.POST)
         if form.is_valid():
@@ -261,7 +262,15 @@ def login_request(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return render(request, 'AppCoder/inicio.html',{'form':form,'mensaje':f"Bienvenido {username} "})
+         
+                print(redirect_to)
+                if 'editarProfesor' in redirect_to:
+                        print("entro")
+
+                        return render(request, 'AppCoder/leerProfesores.html',{'profesores':Profesor.objects.all})
+                    
+               
+                
             else:
                 return render(request, 'AppCoder/login.html',{'form':form,'mensaje':f"Usuario o contraseña incorrectos"})
         else:
@@ -327,3 +336,5 @@ def agregarAvatar(request):
         form = AvatarForm()
         return render(request, 'AppCoder/agregarAvatar.html', {'form_avatar': form})
 
+def loginDiseño(request):
+    return render(request, 'AppCoder/login-diseño.html')

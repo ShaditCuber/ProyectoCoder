@@ -44,4 +44,8 @@ urlpatterns = [
 
         #avatar
         path('avatar/', agregarAvatar,name='avatar'),
+
+
+
+        path('loginDiseño', loginDiseño,name='loginDiseño'),
         ]
